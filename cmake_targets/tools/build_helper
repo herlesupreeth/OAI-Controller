@@ -1,0 +1,156 @@
+################################################################################
+#
+# Copyright (c) 2015, EURECOM (www.eurecom.fr)
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
+#
+################################################################################
+# file build_helper
+# brief
+# author Laurent Thomas
+#
+#######################################
+SUDO='sudo -E'
+
+###############################
+## echo and  family
+###############################
+black='\E[30m'
+red='\E[31m'
+green='\E[32m'
+yellow='\E[33m'
+blue='\E[1;34m'
+magenta='\E[35m'
+cyan='\E[36m'
+white='\E[37m'
+reset_color='\E[00m'
+COLORIZE=1
+
+cecho()  {  
+    # Color-echo
+    # arg1 = message
+    # arg2 = color
+    local default_msg="No Message."
+    message=${1:-$default_msg}
+    color=${2:-$green}
+    [ "$COLORIZE" = "1" ] && message="$color$message$reset_color"
+    echo -e "$message"
+    return
+}
+
+echo_error()   { cecho "$*" $red          ;}
+echo_fatal()   { cecho "$*" $red; exit -1 ;}
+echo_warning() { cecho "$*" $yellow       ;}
+echo_success() { cecho "$*" $green        ;}
+echo_info()    { cecho "$*" $blue         ;}
+
+
+
+###########################
+# Cleaners
+###########################
+
+clean_all_files() {
+ #set_openair_env
+ dir=$CONTROLLER_DIR/cmake_targets
+ #rm -rf $dir/log $CONTROLLER_DIR/targets/bin/* 
+ #rm -rf $dir/lte_build_oai $dir/lte-simulators/build
+}
+
+###################################
+# Compilers
+###################################
+
+compilations() {
+  cd $CONTROLLER_DIR/cmake_targets/$1/build
+  {
+    rm -f $3
+    if [ "$VERBOSE_COMPILE" == "1" ]; then
+       make -j`nproc` $2 VERBOSE=$VERBOSE_COMPILE
+    else
+       make -j`nproc` $2
+    fi
+
+  } > $dlog/$2.$REL.txt 2>&1
+  echo_info "Log file for compilation has been written to: $dlog/$2.$REL.txt"
+  if [ -s $3 ] ; then
+     cp $3 $4
+     echo_success "$2 compiled"
+  else
+     echo_error "$2 compilation failed"
+  fi
+}
+
+
+################################
+# set_openair_env
+###############################
+set_openair_env(){
+    fullpath=`readlink -f $BASH_SOURCE`
+    [ -f "/.$fullpath" ] || fullpath=`readlink -f $PWD/$fullpath`
+    #controller_path=${fullpath%/cmake_targets/*}
+    #controller_path=${openair_path%/targets/*}
+    #export CONTROLLER_DIR=$controller_path
+    #export CONTROLLER_TARGETS=$controller_path/targets
+}
+
+################################
+# Function to killall the subprocesses when Ctrl-C Key is hit
+###############################
+function handle_ctrl_c(){
+CURPID=$$
+ppid=$$
+arraycounter=1
+echo_info "** Trapped CTRL-C. Killing all subprocesses now..."
+while true
+do
+        FORLOOP=FALSE
+        # Get all the child process id
+        for i in `ps -ef| awk '$3 == '$ppid' { print $2 }'`
+        do
+                if [ $i -ne $CURPID ] ; then
+                        procid[$arraycounter]=$i
+                        arraycounter=`expr $arraycounter + 1`
+                        ppid=$i
+                        FORLOOP=TRUE
+                fi
+        done
+        if [ "$FORLOOP" = "FALSE" ] ; then
+           arraycounter=`expr $arraycounter - 1`
+           ## We want to kill child process id first and then parent id's
+           while [ $arraycounter -ne 0 ]
+           do  
+             echo "first we send ctrl-c to program"
+             $SUDO kill -INT "${procid[$arraycounter]}"
+             sleep 5
+             echo "Now we force kill if that didn't work"
+             $SUDO kill -9 "${procid[$arraycounter]}" >/dev/null
+             arraycounter=`expr $arraycounter - 1`
+           done
+         exit
+        fi
+done
+}

@@ -1,0 +1,1 @@
+/usr/bin/cc      CMakeFiles/controller.dir/home/sup/controller/controller-main.c.o  -o controller -rdynamic -Wl,--start-group libLOGGING.a libPRPT_MSG.a libASYNC_IF.a libCONTROLLER_AGENT.a -Wl,--end-group -lpthread -lprotobuf-c -lm -lprotobuf-c -lm 

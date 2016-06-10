@@ -1,0 +1,2 @@
+/usr/bin/ar cr libLOGGING.a  CMakeFiles/LOGGING.dir/home/sup/controller/UTIL/LOG/log.c.o CMakeFiles/LOGGING.dir/home/sup/controller/UTIL/LOG/backtrace.c.o
+/usr/bin/ranlib libLOGGING.a

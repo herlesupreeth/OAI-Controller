@@ -1,0 +1,3 @@
+FILE(REMOVE_RECURSE
+  "libPRPT_MSG.a"
+)

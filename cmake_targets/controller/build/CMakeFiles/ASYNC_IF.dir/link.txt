@@ -1,0 +1,2 @@
+/usr/bin/ar cr libASYNC_IF.a  CMakeFiles/ASYNC_IF.dir/home/sup/controller/ASYNC_IF/socket_link.c.o CMakeFiles/ASYNC_IF.dir/home/sup/controller/ASYNC_IF/link_manager.c.o CMakeFiles/ASYNC_IF.dir/home/sup/controller/ASYNC_IF/message_queue.c.o
+/usr/bin/ranlib libASYNC_IF.a

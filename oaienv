@@ -1,0 +1,1 @@
+export CONTROLLER_DIR=$(pwd)

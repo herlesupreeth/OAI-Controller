@@ -1,0 +1,43 @@
+[  8%] Built target LOGGING
+[ 20%] Built target ASYNC_IF
+Scanning dependencies of target PRPT_MSG
+Scanning dependencies of target CONTROLLER_AGENT
+[ 29%] [ 29%] Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/progran.pb-c.c.o
+[ 37%] [ 37%] Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/header.pb-c.c.o
+Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/stats_common.pb-c.c.o
+Building C object CMakeFiles/CONTROLLER_AGENT.dir/home/sup/controller/controller_agent_handler.c.o
+[ 41%] Building C object CMakeFiles/CONTROLLER_AGENT.dir/home/sup/controller/controller_agent_common.c.o
+[ 45%] Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/stats_messages.pb-c.c.o
+[ 50%] Building C object CMakeFiles/CONTROLLER_AGENT.dir/home/sup/controller/controller_agent_mac.c.o
+[ 54%] [ 58%] Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/controller_commands.pb-c.c.o
+Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/time_common.pb-c.c.o
+[ 62%] Building C object CMakeFiles/CONTROLLER_AGENT.dir/home/sup/controller/controller_agent.c.o
+/home/sup/controller/controller_agent_mac.c: In function ‘controller_agent_mac_destroy_sf_trigger’:
+[ 66%] /home/sup/controller/controller_agent_mac.c:1395:5: warning: passing argument 1 of ‘free’ makes pointer from integer without a cast [enabled by default]
+     free(msg->sf_trigger_msg->ul_info[i]->reception_status);
+     ^
+In file included from /home/sup/controller/controller_agent_defs.h:40:0,
+                 from /home/sup/controller/controller_agent_common.h:49,
+                 from /home/sup/controller/controller_agent_mac.h:45,
+                 from /home/sup/controller/controller_agent_mac.c:37:
+/usr/include/stdlib.h:483:13: note: expected ‘void *’ but argument is of type ‘uint32_t’
+ extern void free (void *__ptr) __THROW;
+             ^
+[ 70%] Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/config_messages.pb-c.c.o
+Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/mac_primitives.pb-c.c.o
+/home/sup/controller/controller_agent.c: In function ‘controller_agent_start’:
+/home/sup/controller/controller_agent.c:318:47: warning: initialization from incompatible pointer type [enabled by default]
+   controller_agent_instance_t *channel_info = controller_agent_async_channel_info(mod_id, in_ip, in_port);
+                                               ^
+[ 75%] Building C object CMakeFiles/CONTROLLER_AGENT.dir/home/sup/controller/controller_agent_task_manager.c.o
+[ 79%] [ 83%] Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/config_common.pb-c.c.o
+Building C object CMakeFiles/PRPT_MSG.dir/CMakeFiles/MESSAGES/control_delegation.pb-c.c.o
+[ 87%] Building C object CMakeFiles/CONTROLLER_AGENT.dir/home/sup/controller/controller_agent_mac_internal.c.o
+Linking C static library libPRPT_MSG.a
+Linking C static library libCONTROLLER_AGENT.a
+[ 87%] Built target PRPT_MSG
+[ 95%] Built target CONTROLLER_AGENT
+Scanning dependencies of target controller
+[100%] Building C object CMakeFiles/controller.dir/home/sup/controller/controller-main.c.o
+Linking C executable controller
+[100%] Built target controller

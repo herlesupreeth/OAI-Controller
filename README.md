@@ -1,4 +1,4 @@
-# OpenAirInterface Controller implementation using C
+# OpenAirInterface Controller implementation using C language
 
 Rough implementation of controller to obtain mac stats from Openairinterface ENB agent
 

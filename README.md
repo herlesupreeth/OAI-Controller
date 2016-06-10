@@ -3,6 +3,13 @@
 Rough implementation of controller to obtain mac stats from Openairinterface ENB agent
 
 #########################################################################################
+PREREQUISITES
+
+1. Compatible OAI ENB code with ENB-AGENT implementation
+2. Google Protocol Buffer (C++)
+3. Protobuf-c
+
+#########################################################################################
 
 INSTRUCTIONS:
 
